@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 14:48:29 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/11 11:31:53 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/06/17 23:27:02 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,8 @@ void		add_back_token(t_token **token, t_token *new);
 t_token		*define_token_type(char *str);
 t_token		*lexer(char **split_res);
 void		clear_token(t_token **lst);
+
+/* ====== QUOTE REMOVAL ====== */
+void		quote_removal(t_token *tokens);
 
 #endif

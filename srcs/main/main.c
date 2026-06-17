@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 11:15:07 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/11 11:52:58 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/06/17 23:19:54 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int main(int ac, char **av, char **envp)
 		free(split_res);
 		if (!tokens)
 			continue ;
+		expander(tokens, env_list, error_status);
+		quote_removal(tokens);
 		cmds = parse(tokens, &error_status);
 		clear_token(&tokens);
 		if (!cmds)
