@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+         #
+#    By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/06/10 10:14:34 by adchebbi          #+#    #+#              #
-#    Updated: 2026/06/13 06:58:59 by adchebbi         ###   ########.fr        #
+#    Updated: 2026/06/17 23:20:40 by ragolden         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ LIBFT_DIR   = libft/
 OBJ_DIR     = obj/
 
 SRCS        = $(SRCS_DIR)/lexer/lexer.c \
+			  $(SRCS_DIR)/lexer/quote_removal.c \
 			  $(SRCS_DIR)/env/env.c \
 			  $(SRCS_DIR)/env/env_utils.c \
 			  $(SRCS_DIR)/main/main.c \
@@ -34,6 +35,8 @@ SRCS        = $(SRCS_DIR)/lexer/lexer.c \
 			  $(SRCS_DIR)/exec/exec_path.c \
 			  $(SRCS_DIR)/exec/exec_redirs.c \
 			  $(SRCS_DIR)/exec/exec.c \
+			  $(SRCS_DIR)/expander/expander_utils.c \
+			  $(SRCS_DIR)/expander/expander.c \
 
 OBJS        = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 
