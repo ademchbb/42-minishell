@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 15:22:30 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/17 23:27:19 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/18 10:19:44 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	expander(t_token *tokens, t_env *env, int error_status);
 char	*get_env_val(t_env *env, char *name);
 int		get_name_len(char *str, int start);
 char	*assemble_str(char *before, char *variable_value, char *after);
-char	*replace_variable(char *old_str, int dollar, 
-	t_env *env, int error_status);
+char	*replace_variable(char *old_str, int dollar,
+			t_env *env, int error_status);
 
 #endif

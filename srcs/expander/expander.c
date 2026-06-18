@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 22:30:54 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/17 23:33:48 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/18 10:19:31 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	expand_token_content(t_token *tok, t_env *env, int error_status)
 		else if (tok->token[i] == '$' && !in_squote)
 		{
 			if (tok->token[i + 1] && (ft_isalnum(tok->token[i + 1])
-				|| tok->token[i + 1] == '_' || tok->token[i + 1] == '?'))
+					|| tok->token[i + 1] == '_' || tok->token[i + 1] == '?'))
 			{
 				tok->token = replace_variable(tok->token, i, env, error_status);
 				i--;

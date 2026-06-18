@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 21:26:23 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/17 23:28:26 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/18 10:20:05 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int	get_name_len(char *str, int start)
 	len = 0;
 	if (str[start] == '?')
 		return (1);
-	while (str[start + len] && (ft_isalnum(str[start + len]) 
-		|| str[start + len] == '_'))
+	while (str[start + len] && (ft_isalnum(str[start + len])
+			|| str[start + len] == '_'))
 		len++;
 	return (len);
 }
@@ -59,7 +59,7 @@ char	*assemble_str(char *before, char *variable_value, char *after)
 	return (res);
 }
 
-char	*replace_variable(char *old_str, int dollar, 
+char	*replace_variable(char *old_str, int dollar,
 	t_env *env, int error_status)
 {
 	char	*before;
