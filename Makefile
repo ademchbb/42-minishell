@@ -6,7 +6,7 @@
 #    By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/06/10 10:14:34 by adchebbi          #+#    #+#              #
-#    Updated: 2026/06/17 23:20:40 by ragolden         ###   ########.fr        #
+#    Updated: 2026/06/18 21:18:07 by ragolden         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,11 @@ SRCS        = $(SRCS_DIR)/lexer/lexer.c \
 			  $(SRCS_DIR)/main/main.c \
               $(SRCS_DIR)/parser/parser.c \
               $(SRCS_DIR)/parser/parser_utils.c \
+              $(SRCS_DIR)/parser/syntax_check.c \
               $(SRCS_DIR)/parser/parser_free.c \
               $(SRCS_DIR)/utils/error.c \
               $(SRCS_DIR)/utils/ms_split.c \
+              $(SRCS_DIR)/utils/add_spaces.c \
 			  $(SRCS_DIR)/exec/env_array.c \
 			  $(SRCS_DIR)/exec/exec_child.c \
 			  $(SRCS_DIR)/exec/exec_path.c \
