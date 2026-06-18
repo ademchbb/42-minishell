@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 11:15:07 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/17 23:19:54 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/18 21:29:28 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@ int main(int ac, char **av, char **envp)
 			break ;
 		if (*line)
 			add_history(line);
+		if (check_unclosed_quotes(line))
+		{
+			error_status = 2;
+			free(line);
+			continue ;
+		}
+		line = add_spaces_ops(line);
+		if (!line)
+			continue ;
 		split_res = ms_split(line);
 		free(line);
 		if (!split_res)
@@ -45,6 +54,12 @@ int main(int ac, char **av, char **envp)
 		free(split_res);
 		if (!tokens)
 			continue ;
+		if (check_tokens_syntax(tokens))
+		{
+			error_status = 2;
+			clear_token(&tokens);
+			continue ;
+		}
 		expander(tokens, env_list, error_status);
 		quote_removal(tokens);
 		cmds = parse(tokens, &error_status);

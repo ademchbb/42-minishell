@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 11:07:27 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/11 11:31:19 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/06/18 21:32:24 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,8 @@ void	err_msg(const char *prefix, const char *msg);
 
 /* ===== UTILS ===== */
 char	**ms_split(char const *s);
+int		check_unclosed_quotes(char *line);
+char	*add_spaces_ops(char *line);
+int		check_tokens_syntax(t_token *tokens);
 
 #endif
