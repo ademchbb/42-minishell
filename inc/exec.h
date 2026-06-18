@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 05:47:59 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/17 23:26:46 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/18 10:17:33 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	EXEC_H
+#ifndef EXEC_H
 # define EXEC_H
 
 # include "env.h"
