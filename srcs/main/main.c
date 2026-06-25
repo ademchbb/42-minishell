@@ -6,11 +6,14 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 11:15:07 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/18 21:29:28 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/25 17:29:39 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+#include "signals.h"
+
+int	g_status = 0;
 
 static void init_shell(int *error_status)
 {
@@ -30,9 +33,15 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 	init_shell(&error_status);
 	env_list = init_env(envp);
+	init_signals();
 	while (1)
 	{
 		line = readline("minishell$ ");
+		if (g_status == 130)
+        {
+            error_status = g_status;
+            g_status = 0;
+        }
 		if (!line)
 			break ;
 		if (*line)
@@ -63,12 +72,17 @@ int main(int ac, char **av, char **envp)
 		expander(tokens, env_list, error_status);
 		quote_removal(tokens);
 		cmds = parse(tokens, &error_status);
-		clear_token(&tokens);
-		if (!cmds)
-			continue ;
-		error_status = exec_cmds(cmds, env_list);
-		cmds_free(cmds);
-	}
-	free_env(env_list);
-	return (error_status);
+        clear_token(&tokens);
+        if (!cmds)
+            continue ;
+        error_status = exec_cmds(cmds, env_list);
+        cmds_free(cmds);
+		if (g_status == 130)
+        {
+            error_status = g_status;
+            g_status = 0;
+        }
+    }
+    free_env(env_list);
+    return (error_status);
 }
