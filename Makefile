@@ -6,7 +6,7 @@
 #    By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/06/10 10:14:34 by adchebbi          #+#    #+#              #
-#    Updated: 2026/06/18 21:18:07 by ragolden         ###   ########.fr        #
+#    Updated: 2026/06/25 18:13:56 by ragolden         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,10 @@ SRCS        = $(SRCS_DIR)/lexer/lexer.c \
 			  $(SRCS_DIR)/exec/exec_path.c \
 			  $(SRCS_DIR)/exec/exec_redirs.c \
 			  $(SRCS_DIR)/exec/exec.c \
+			  $(SRCS_DIR)/exec/here_doc.c \
 			  $(SRCS_DIR)/expander/expander_utils.c \
 			  $(SRCS_DIR)/expander/expander.c \
+			  $(SRCS_DIR)/signals/signals.c \
 
 OBJS        = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 

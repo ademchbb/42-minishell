@@ -3,17 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 05:54:29 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/13 06:56:37 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/06/25 18:18:32 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "signals.h"
 
 static void	child_process(t_cmd *cmd, t_env *env, int prev_fd, int *fds)
 {
+	init_signals_child();
+	if (apply_redirs(cmd->redirs))
+	{
+		if (g_status == 130)
+			exit(130);
+		exit(1);
+	}
 	if (prev_fd != -1)
 	{
 		dup2(prev_fd, 0);
@@ -25,8 +33,6 @@ static void	child_process(t_cmd *cmd, t_env *env, int prev_fd, int *fds)
 		dup2(fds[1], 1);
 		close(fds[1]);
 	}
-	if (apply_redirs(cmd->redirs))
-		exit(1);
 	exec_child(cmd, env);
 }
 
@@ -54,6 +60,25 @@ static int	spawn_one(t_cmd *cmd, t_env *env, int *prev_fd)
 	return (pid);
 }
 
+static void	check_child_status(int status, pid_t pid, pid_t last_pid, int *ret)
+{
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT && pid == last_pid)
+			write(1, "\n", 1);
+		else if (WTERMSIG(status) == SIGQUIT && pid == last_pid)
+			write(1, "Quit (core dumped)\n", 19);
+		if (pid == last_pid)
+			*ret = 128 + WTERMSIG(status);
+	}
+	else if (pid == last_pid && WIFEXITED(status))
+	{
+		*ret = WEXITSTATUS(status);
+		if (*ret == 130)
+			g_status = 130;
+	}
+}
+
 static int	wait_all(pid_t last_pid)
 {
 	int		status;
@@ -64,10 +89,7 @@ static int	wait_all(pid_t last_pid)
 	pid = wait(&status);
 	while (pid != -1)
 	{
-		if (pid == last_pid && WIFEXITED(status))
-			ret = WEXITSTATUS(status);
-		else if (pid == last_pid && WIFSIGNALED(status))
-			ret = 128 + WTERMSIG(status);
+		check_child_status(status, pid, last_pid, &ret);
 		pid = wait(&status);
 	}
 	return (ret);
@@ -77,15 +99,22 @@ int	exec_cmds(t_cmd *cmds, t_env *env)
 {
 	int		prev_fd;
 	pid_t	last;
+	int		ret;
 
 	prev_fd = -1;
 	last = -1;
+	init_signals_parent();
 	while (cmds)
 	{
 		last = spawn_one(cmds, env, &prev_fd);
 		if (last == -1)
+		{
+			init_signals();
 			return (1);
+		}
 		cmds = cmds->next;
 	}
-	return (wait_all(last));
+	ret = wait_all(last);
+	init_signals();
+	return (ret);
 }
