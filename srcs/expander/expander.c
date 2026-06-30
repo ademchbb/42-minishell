@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 22:30:54 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/18 10:19:31 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/06/30 18:31:40 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,27 @@ void	expander(t_token *tokens, t_env *env, int error_status)
 			expand_token_content(current, env, error_status);
 		current = current->next;
 	}
+}
+
+char	*expand_heredoc_line(char *line, t_env *env, int error_status)
+{
+	int	i;
+
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '$')
+		{
+			if (line[i + 1] && (ft_isalnum(line[i + 1])
+					|| line[i + 1] == '_' || line[i + 1] == '?'))
+			{
+				line = replace_variable(line, i, env, error_status);
+				i--;
+			}
+		}
+		i++;
+	}
+	return (line);
 }

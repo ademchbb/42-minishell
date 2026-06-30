@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 11:07:27 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/18 21:32:24 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/30 17:51:58 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "lexer.h"
 # include "libft.h"
+# include "expander.h"
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -37,6 +38,7 @@ typedef struct s_redir
 {
 	t_redir_type	type;
 	char			*target;
+	int				heredoc_fd;
 	struct s_redir	*next;
 }	t_redir;
 

@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 05:54:29 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/25 18:18:32 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/30 18:04:46 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 static void	child_process(t_cmd *cmd, t_env *env, int prev_fd, int *fds)
 {
 	init_signals_child();
-	if (apply_redirs(cmd->redirs))
-	{
-		if (g_status == 130)
-			exit(130);
-		exit(1);
-	}
 	if (prev_fd != -1)
 	{
 		dup2(prev_fd, 0);
@@ -32,6 +26,12 @@ static void	child_process(t_cmd *cmd, t_env *env, int prev_fd, int *fds)
 		close(fds[0]);
 		dup2(fds[1], 1);
 		close(fds[1]);
+	}
+	if (apply_redirs(cmd->redirs))
+	{
+		if (g_status == 130)
+			exit(130);
+		exit(1);
 	}
 	exec_child(cmd, env);
 }
@@ -101,6 +101,11 @@ int	exec_cmds(t_cmd *cmds, t_env *env)
 	pid_t	last;
 	int		ret;
 
+	if (run_heredocs_pre_exec(cmds, env) == 130)
+	{
+		g_status = 130;
+		return (130);
+	}
 	prev_fd = -1;
 	last = -1;
 	init_signals_parent();

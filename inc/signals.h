@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/25 16:14:39 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/25 16:55:38 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/06/30 16:16:10 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <termios.h>
 
 extern int	g_status;
 

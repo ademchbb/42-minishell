@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 15:22:30 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/18 10:19:44 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/06/30 17:14:16 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ int		get_name_len(char *str, int start);
 char	*assemble_str(char *before, char *variable_value, char *after);
 char	*replace_variable(char *old_str, int dollar,
 			t_env *env, int error_status);
+char	*expand_heredoc_line(char *line, t_env *env, int error_status);
 
 #endif
