@@ -6,7 +6,7 @@
 /*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 06:14:05 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/13 06:55:02 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 07:01:10 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	exec_child(t_cmd *cmd, t_env *env)
 
 	if (!cmd->args || !cmd->args[0])
 		exit(0);
+	if (is_builtin(cmd->args[0]))
+		exit(run_builtin(cmd, &env, 0));
 	path = resolve_path(cmd->args[0], env);
 	if (!path)
 	{

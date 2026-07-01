@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 11:15:07 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/25 17:29:39 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 07:08:02 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int main(int ac, char **av, char **envp)
         clear_token(&tokens);
         if (!cmds)
             continue ;
-        error_status = exec_cmds(cmds, env_list);
+        error_status = exec_cmds(cmds, &env_list, error_status);
         cmds_free(cmds);
 		if (g_status == 130)
         {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 05:47:59 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/30 18:30:47 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 07:06:02 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <termios.h>
 
 /* ====== EXEC ===== */
-int		exec_cmds(t_cmd *cmds, t_env *env);
+int		exec_cmds(t_cmd *cmds, t_env **env, int last_status);
 void	exec_child(t_cmd *cmd, t_env *env);
 char	*resolve_path(char *cmd, t_env *env);
 char	*env_get_value(t_env *env, char *name);

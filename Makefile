@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+         #
+#    By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/06/10 10:14:34 by adchebbi          #+#    #+#              #
-#    Updated: 2026/06/30 17:58:47 by ragolden         ###   ########.fr        #
+#    Updated: 2026/07/01 06:44:51 by adchebbi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,16 @@ SRCS        = $(SRCS_DIR)/lexer/lexer.c \
 			  $(SRCS_DIR)/signals/heredoc_signals.c \
 			  $(SRCS_DIR)/get_next_line/get_next_line.c \
 			  $(SRCS_DIR)/get_next_line/get_next_line_utils.c \
+			  $(SRCS_DIR)/builtins/built_ins.c \
+			  $(SRCS_DIR)/builtins/env_ops.c \
+			  $(SRCS_DIR)/builtins/built_in_echo.c \
+			  $(SRCS_DIR)/builtins/built_in_pwd.c \
+			  $(SRCS_DIR)/builtins/built_in_env.c \
+			  $(SRCS_DIR)/builtins/built_in_cd.c \
+			  $(SRCS_DIR)/builtins/built_in_export.c \
+			  $(SRCS_DIR)/builtins/built_in_export_print.c \
+			  $(SRCS_DIR)/builtins/built_in_unset.c \
+			  $(SRCS_DIR)/builtins/built_in_exit.c \
 
 OBJS        = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 
@@ -77,6 +87,7 @@ fclean: clean
 	@make -C $(LIBFT_DIR) fclean --no-print-directory
 	@echo "$(RED)[-] Exécutable '$(NAME)' et libft.a supprimés.$(RESET)"
 	@sleep 1
+	@clear
 
 re: fclean all
 
