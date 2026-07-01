@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 05:47:59 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/07/01 07:06:02 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 14:21:41 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int		apply_redirs(t_redir *r);
 char	**env_to_array(t_env *env);
 
 /* ====== HERE_DOC ===== */
-int		handle_heredoc(char *delimiter, t_env *env);
+int		handle_heredoc(char *delimiter, t_env *env, int quoted);
 int		run_heredocs_pre_exec(t_cmd *cmds, t_env *env);
+int		is_delimiter(char *line, char *delimiter);
 
 #endif

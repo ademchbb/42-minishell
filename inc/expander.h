@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 15:22:30 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/30 17:14:16 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 12:51:06 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_env
 }	t_env;
 
 /* ====== EXPANDER ====== */
-void	expander(t_token *tokens, t_env *env, int error_status);
+void	expander(t_token **tokens, t_env *env, int error_status);
 
 /* ====== EXPANDER UTILS ====== */
 char	*get_env_val(t_env *env, char *name);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 22:58:59 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/28 23:22:50 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 13:12:13 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	builtin_cd(t_cmd *cmd, t_env **env)
 	char	*oldpwd;
 
 	if (cmd->args[1] && cmd->args[2])
-		return (err_msg("cd", "too many arguments"), 1);
+		return (err_msg("cd", "too many arguments"), 2);
 	target = get_cd_target(cmd, *env);
 	if (!target)
 		return (1);

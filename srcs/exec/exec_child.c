@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 06:14:05 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/07/01 07:01:10 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 13:08:18 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	exec_child(t_cmd *cmd, t_env *env)
 	path = resolve_path(cmd->args[0], env);
 	if (!path)
 	{
+		if (ft_strchr(cmd->args[0], '/') && access(cmd->args[0], F_OK) == 0)
+		{
+			err_msg(cmd->args[0], "Permission denied");
+			exit(126);
+		}
 		err_msg(cmd->args[0], "command not found");
 		exit(127);
 	}
