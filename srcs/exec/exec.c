@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 05:54:29 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/30 18:04:46 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 07:07:28 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,28 +95,27 @@ static int	wait_all(pid_t last_pid)
 	return (ret);
 }
 
-int	exec_cmds(t_cmd *cmds, t_env *env)
+int	exec_cmds(t_cmd *cmds, t_env **env, int last_status)
 {
 	int		prev_fd;
 	pid_t	last;
 	int		ret;
 
-	if (run_heredocs_pre_exec(cmds, env) == 130)
+	if (run_heredocs_pre_exec(cmds, *env) == 130)
 	{
 		g_status = 130;
 		return (130);
 	}
+	if (is_single_builtin(cmds))
+		return (run_builtin_parent(cmds, env, last_status));
 	prev_fd = -1;
 	last = -1;
 	init_signals_parent();
 	while (cmds)
 	{
-		last = spawn_one(cmds, env, &prev_fd);
+		last = spawn_one(cmds, *env, &prev_fd);
 		if (last == -1)
-		{
-			init_signals();
-			return (1);
-		}
+			return (init_signals(), 1);
 		cmds = cmds->next;
 	}
 	ret = wait_all(last);

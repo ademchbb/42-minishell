@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/25 17:40:14 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/30 17:37:37 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 07:35:59 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static void	read_heredoc(int write_fd, char *delimiter, t_env *env)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 		{
-			ft_putstr_fd("\nminishell: warning: here-document delimited by end-of-file\n", 2);
+			ft_putstr_fd("\nminishell: warning: here-document "
+				"delimited by end-of-file\n", 2);
 			break ;
 		}
 		if (is_delimiter(line, delimiter))

@@ -6,7 +6,7 @@
 /*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 18:24:46 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/11 11:53:30 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 06:44:23 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "parser.h"
 # include "libft.h"
 # include "exec.h"
+# include "builtins.h"
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
