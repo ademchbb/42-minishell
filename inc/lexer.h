@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 14:48:29 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/17 23:27:02 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 13:45:54 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*token;
+	int				quoted;
 	struct s_token	*next;
 }	t_token;
 

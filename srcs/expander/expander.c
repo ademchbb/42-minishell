@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 22:30:54 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/30 18:31:40 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 14:29:55 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,40 @@ static void	expand_token_content(t_token *tok, t_env *env, int error_status)
 	}
 }
 
-void	expander(t_token *tokens, t_env *env, int error_status)
+static void	*remove_token(t_token **tokens, t_token *prev,
+			t_token *current, t_token *next)
+{
+	if (prev)
+		prev->next = next;
+	else
+		*tokens = next;
+	free(current->token);
+	free(current);
+	current = next;
+}
+
+void	expander(t_token **tokens, t_env *env, int error_status)
 {
 	t_token	*current;
+	t_token	*prev;
+	t_token	*next;
 
-	current = tokens;
+	prev = NULL;
+	current = *tokens;
 	while (current)
 	{
+		next = current->next;
 		if (current->type == WORD)
+		{
 			expand_token_content(current, env, error_status);
-		current = current->next;
+			if (current->token && current->token[0] == '\0')
+			{
+				current = remove_token(tokens, prev, current, next);
+				continue ;
+			}
+		}
+		prev = current;
+		current = next;
 	}
 }
 

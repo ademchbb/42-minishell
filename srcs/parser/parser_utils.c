@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 06:25:01 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/10 11:09:03 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 13:57:45 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	push_arg(t_cmd *c, char *value)
 	return (0);
 }
 
-static int	push_redir(t_cmd *c, t_redir_type t, char *target)
+static int	push_redir(t_cmd *c, t_redir_type t, char *target, int quoted)
 {
 	t_redir	*r;
 	t_redir	*cur;
@@ -55,6 +55,8 @@ static int	push_redir(t_cmd *c, t_redir_type t, char *target)
 		return (1);
 	r->type = t;
 	r->target = target;
+	r->heredoc_fd = -1;
+	r->quoted = quoted;
 	r->next = NULL;
 	if (!c->redirs)
 		return (c->redirs = r, 0);
@@ -83,7 +85,7 @@ int	handle_redir(t_token **tok, t_cmd *cur)
 		rt = R_APPEND;
 	else
 		rt = R_HEREDOC;
-	if (push_redir(cur, rt, ft_strdup(tgt->token)))
+	if (push_redir(cur, rt, ft_strdup(tgt->token), tgt->quoted))
 		return (1);
 	*tok = tgt->next;
 	return (0);

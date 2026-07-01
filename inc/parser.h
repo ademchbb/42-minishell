@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 11:07:27 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/30 17:51:58 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 13:46:47 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_redir
 	t_redir_type	type;
 	char			*target;
 	int				heredoc_fd;
+	int				quoted;
 	struct s_redir	*next;
 }	t_redir;
 

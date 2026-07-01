@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/25 17:40:14 by ragolden          #+#    #+#             */
-/*   Updated: 2026/07/01 07:35:59 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 14:24:51 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,17 @@
 
 extern int	g_status;
 
-static int	is_delimiter(char *line, char *delimiter)
+static void	write_heredoc_line(int write_fd, char *line, t_env *env, int quoted)
 {
-	size_t	len;
-
-	len = ft_strlen(line);
-	if (len > 0 && line[len - 1] == '\n')
-		len--;
-	return (ft_strlen(delimiter) == len && ft_strncmp(line, delimiter,
-			len) == 0);
+	if (!quoted)
+		line = expand_heredoc_line(line, env, g_status);
+	write(write_fd, line, ft_strlen(line));
+	if (line[ft_strlen(line) - 1] != '\n')
+		write(write_fd, "\n", 1);
+	free(line);
 }
 
-static void	read_heredoc(int write_fd, char *delimiter, t_env *env)
+static void	read_heredoc(int write_fd, char *delimiter, t_env *env, int quoted)
 {
 	char	*line;
 
@@ -46,11 +45,7 @@ static void	read_heredoc(int write_fd, char *delimiter, t_env *env)
 			free(line);
 			break ;
 		}
-		line = expand_heredoc_line(line, env, g_status);
-		write(write_fd, line, ft_strlen(line));
-		if (line[ft_strlen(line) - 1] != '\n')
-			write(write_fd, "\n", 1);
-		free(line);
+		write_heredoc_line(write_fd, line, env, quoted);
 	}
 	close(write_fd);
 	exit(0);
@@ -72,7 +67,7 @@ static int	check_heredoc_status(pid_t pid, int *fds)
 	return (fds[0]);
 }
 
-int	handle_heredoc(char *delimiter, t_env *env)
+int	handle_heredoc(char *delimiter, t_env *env, int quoted)
 {
 	int		fds[2];
 	pid_t	pid;
@@ -94,7 +89,7 @@ int	handle_heredoc(char *delimiter, t_env *env)
 		close(fds[0]);
 		dup2(save_stdin, STDIN_FILENO);
 		close(save_stdin);
-		read_heredoc(fds[1], delimiter, env);
+		read_heredoc(fds[1], delimiter, env, quoted);
 	}
 	close(save_stdin);
 	close(fds[1]);

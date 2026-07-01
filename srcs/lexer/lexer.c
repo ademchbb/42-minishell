@@ -6,7 +6,7 @@
 /*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 16:04:43 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/10 11:12:21 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 14:19:59 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_token	*new_token(char *word, t_token_type type)
 		return (NULL);
 	new->token = word;
 	new->type = type;
+	new->quoted = 0;
 	new->next = NULL;
 	return (new);
 }
@@ -44,6 +45,8 @@ void	add_back_token(t_token **token, t_token *new)
 
 t_token	*define_token_type(char *str)
 {
+	t_token	*tok;
+
 	if (ft_strcmp(str, "|") == 0)
 		return (new_token(str, PIPE));
 	if (ft_strcmp(str, ">") == 0)
@@ -54,8 +57,11 @@ t_token	*define_token_type(char *str)
 		return (new_token(str, READ_IN));
 	if (ft_strcmp(str, ">>") == 0)
 		return (new_token(str, READ_OUT));
-	else
-		return (new_token(str, WORD));
+	tok = new_token(str, WORD);
+	if (tok)
+		tok->quoted = (ft_strchr(str, '\'') != NULL
+				|| ft_strchr(str, '"') != NULL);
+	return (tok);
 }
 
 t_token	*lexer(char **split_res)

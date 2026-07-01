@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*   built_in_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 18:49:08 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/29 19:16:14 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 13:11:59 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	builtin_exit(t_cmd *cmd, t_env **env, int last_status)
 		exit(2);
 	}
 	if (cmd->args[2])
-		return (err_msg("exit", "too many arguments"), 1);
+		return (err_msg("exit", "too many arguments"), 2);
 	exit_cleanup(cmd, env);
 	exit((unsigned char)(code % 256));
 }
