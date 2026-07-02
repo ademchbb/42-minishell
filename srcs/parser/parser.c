@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 06:25:20 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/10 11:09:31 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 19:56:27 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,15 @@ static t_cmd	*new_cmd(void)
 
 static int	handle_word(t_token **tok, t_cmd *cur)
 {
-	if (push_arg(cur, ft_strdup((*tok)->token)))
+	char	*dup;
+
+	if (!(*tok)->token)
+		return (*tok = (*tok)->next, 0);
+	dup = ft_strdup((*tok)->token);
+	if (!dup)
 		return (1);
+	if (push_arg(cur, dup))
+		return (free(dup), 1);
 	*tok = (*tok)->next;
 	return (0);
 }

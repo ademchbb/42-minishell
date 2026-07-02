@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 22:30:54 by ragolden          #+#    #+#             */
-/*   Updated: 2026/07/01 14:29:55 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/01 20:21:42 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	expand_token_content(t_token *tok, t_env *env, int error_status)
 	}
 }
 
-static void	*remove_token(t_token **tokens, t_token *prev,
+static t_token	*remove_token(t_token **tokens, t_token *prev,
 			t_token *current, t_token *next)
 {
 	if (prev)
@@ -50,6 +50,7 @@ static void	*remove_token(t_token **tokens, t_token *prev,
 	free(current->token);
 	free(current);
 	current = next;
+	return (next);
 }
 
 void	expander(t_token **tokens, t_env *env, int error_status)
@@ -92,6 +93,8 @@ char	*expand_heredoc_line(char *line, t_env *env, int error_status)
 					|| line[i + 1] == '_' || line[i + 1] == '?'))
 			{
 				line = replace_variable(line, i, env, error_status);
+				if (!line)
+					return (NULL);
 				i--;
 			}
 		}

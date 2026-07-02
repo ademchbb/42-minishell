@@ -6,7 +6,7 @@
 /*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 21:26:23 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/18 10:20:05 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 19:54:45 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ char	*assemble_str(char *before, char *variable_value, char *after)
 	char	*res;
 
 	tmp = ft_strjoin(before, variable_value);
+	if (!tmp)
+		return (free(before), free(variable_value),
+			free(after), NULL);
 	res = ft_strjoin(tmp, after);
 	free(tmp);
 	free(before);
@@ -71,12 +74,15 @@ char	*replace_variable(char *old_str, int dollar,
 	before = ft_substr(old_str, 0, dollar);
 	name_len = get_name_len(old_str, dollar + 1);
 	name = ft_substr(old_str, dollar + 1, name_len);
-	if (ft_strcmp(name, "?") == 0)
+	if (name && ft_strcmp(name, "?") == 0)
 		variable_value = ft_itoa(error_status);
 	else
 		variable_value = get_env_val(env, name);
 	free(name);
 	after = ft_strdup(old_str + dollar + 1 + name_len);
+	if (!before || !variable_value || !after)
+		return (free(before), free(variable_value),
+			free(after), old_str);
 	free(old_str);
 	return (assemble_str(before, variable_value, after));
 }
