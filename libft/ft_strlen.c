@@ -6,7 +6,7 @@
 /*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 13:30:45 by adchebbi          #+#    #+#             */
-/*   Updated: 2025/11/18 12:58:53 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 19:54:42 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s || !s[i])
+		return (0);
 	while (s[i])
 		i++;
 	return (i);

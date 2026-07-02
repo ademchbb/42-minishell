@@ -6,7 +6,7 @@
 /*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 17:09:10 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/01/23 09:15:08 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/01 19:54:43 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *s1)
 	size_t		i;
 	size_t		len_s1;
 
+	if (!s1)
+		return (NULL);
 	i = 0;
 	len_s1 = ft_strlen(s1);
 	s2 = malloc(len_s1 + 1);
