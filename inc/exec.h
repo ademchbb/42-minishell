@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 05:47:59 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/07/01 14:21:41 by ragolden         ###   ########.fr       */
+/*   Updated: 2026/07/03 21:05:42 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <fcntl.h>
 # include <string.h>
 # include <sys/wait.h>
-# include "get_next_line.h"
 # include <termios.h>
 
 /* ====== EXEC ===== */

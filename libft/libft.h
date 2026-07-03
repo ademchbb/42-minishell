@@ -6,7 +6,7 @@
 /*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 11:46:13 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/03/23 10:48:52 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/03 21:05:07 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ char	*ft_verify(char *tmp, char *buff);
 void	ft_extract(char **ptr);
 char	*get_next_line(int fd);
 char	*ft_free(char **ptr_tmp, char **ptr_buff, ssize_t rb);
-char	*get_next_line(int fd);
 
 /* Else */
 void	free_tab(char **tab);
