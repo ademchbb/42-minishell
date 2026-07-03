@@ -6,7 +6,7 @@
 #    By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/06/10 10:14:34 by adchebbi          #+#    #+#              #
-#    Updated: 2026/07/01 06:44:51 by adchebbi         ###   ########.fr        #
+#    Updated: 2026/07/03 21:03:45 by adchebbi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,8 +43,6 @@ SRCS        = $(SRCS_DIR)/lexer/lexer.c \
 			  $(SRCS_DIR)/expander/expander.c \
 			  $(SRCS_DIR)/signals/signals.c \
 			  $(SRCS_DIR)/signals/heredoc_signals.c \
-			  $(SRCS_DIR)/get_next_line/get_next_line.c \
-			  $(SRCS_DIR)/get_next_line/get_next_line_utils.c \
 			  $(SRCS_DIR)/builtins/built_ins.c \
 			  $(SRCS_DIR)/builtins/env_ops.c \
 			  $(SRCS_DIR)/builtins/built_in_echo.c \

@@ -6,27 +6,11 @@
 /*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 08:26:46 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/01/23 09:26:01 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/03 21:04:42 by adchebbi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-char	*ft_strchr(const char *s, int c)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == (char) c)
-			return ((char *)s + i);
-		i++;
-	}
-	if ((char)c == '\0')
-		return ((char *)s + i);
-	return (NULL);
-}
 
 char	*ft_verify(char *tmp, char *buff)
 {
