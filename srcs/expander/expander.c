@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 22:30:54 by ragolden          #+#    #+#             */
-/*   Updated: 2026/07/01 20:21:42 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/04 15:05:46 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
+
+static void	handle_dollar(t_token *tok, int *i, t_env *env, int error_status)
+{
+	if (tok->token[*i + 1] && (ft_isalnum(tok->token[*i + 1])
+			|| tok->token[*i + 1] == '_' || tok->token[*i + 1] == '?'))
+	{
+		tok->token = replace_variable(tok->token, *i, env, error_status);
+		(*i)--;
+	}
+}
 
 static void	expand_token_content(t_token *tok, t_env *env, int error_status)
 {
@@ -25,17 +35,16 @@ static void	expand_token_content(t_token *tok, t_env *env, int error_status)
 	{
 		if (tok->token[i] == '\'' && !in_dquote)
 			in_squote = !in_squote;
+		else if (tok->token[i] == '\\' && !in_squote && !in_dquote)
+		{
+			ft_memmove(&tok->token[i], &tok->token[i + 1],
+				ft_strlen(&tok->token[i + 1] + 1));
+			i++;
+		}
 		else if (tok->token[i] == '\"' && !in_squote)
 			in_dquote = !in_dquote;
 		else if (tok->token[i] == '$' && !in_squote)
-		{
-			if (tok->token[i + 1] && (ft_isalnum(tok->token[i + 1])
-					|| tok->token[i + 1] == '_' || tok->token[i + 1] == '?'))
-			{
-				tok->token = replace_variable(tok->token, i, env, error_status);
-				i--;
-			}
-		}
+			handle_dollar(tok, &i, env, error_status);
 		i++;
 	}
 }

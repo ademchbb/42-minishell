@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 12:59:55 by adchebbi          #+#    #+#             */
-/*   Updated: 2026/06/29 12:59:59 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/04 15:09:53 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 # define BUILTINS_H
 
 # include "env.h"
+# include "expander.h"
+# include "lexer.h"
+# include "parser.h"
+# include "libft.h"
+# include "exec.h"
+# include "builtins.h"
+# include <fcntl.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
 /* ====== DISPATCH ====== */
 int		is_builtin(char *name);

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adchebbi <adchebbi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ragolden <ragolden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 16:56:33 by ragolden          #+#    #+#             */
-/*   Updated: 2026/06/11 11:32:35 by adchebbi         ###   ########.fr       */
+/*   Updated: 2026/07/04 15:10:52 by ragolden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
+#include "env.h"
 
 t_env	*new_env_node(char *name, char *value)
 {
@@ -59,6 +60,8 @@ t_env	*init_env(char **envp)
 		{
 			name = ft_substr(envp[i], 0, eq_pos - envp[i]);
 			value = ft_strdup(eq_pos + 1);
+			if (!name || !value)
+				return (free(name), free(value), free_env(env), NULL);
 			add_back_env(&env, new_env_node(name, value));
 		}
 		i++;
