@@ -1,113 +1,141 @@
 *This project has been created as part of the 42 curriculum by ragolden, adchebbi.*
 
-# Minishell
+# minishell
 
-## Description
+> A Bash-like interactive shell written from scratch in C: lexer, parser, variable expansion, pipelines,
+> redirections, heredocs and signal handling, all built on raw Unix system calls.
 
-Minishell is a lightweight Unix shell written in C, built as part of the 42 curriculum. The goal is to reproduce the core behavior of `bash --posix`, including command execution, environment variable management, redirections, pipes, and signal handling.
+![42 score](https://img.shields.io/badge/42%20score-101%2F100-success) ![C](https://img.shields.io/badge/language-C-00599C) ![42 Paris](https://img.shields.io/badge/school-42%20Paris-000000) ![Team](https://img.shields.io/badge/team-2%20people-informational)
 
-The project covers a wide range of systems programming concepts: process creation with `fork`/`execve`, inter-process communication via pipes, file descriptor manipulation, signal handling with `sigaction`, and terminal control with `termios`. The shell parses and executes command lines through a full pipeline: lexing, syntax checking, expansion, quote removal, parsing, and execution.
-
-### Features
-
-- Interactive prompt with command history (via `readline`)
-- Builtins: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`
-- Environment variable expansion (`$VAR`, `$?`)
-- Single and double quote handling
-- Redirections: `<`, `>`, `>>`, `<<` (heredoc)
-- Pipes (`|`) with support for multi-segment pipelines
-- Multiple heredocs on the same command (`cat << A << B`)
-- Quoted heredoc delimiters disable expansion (`cat << 'EOF'`)
-- Signal handling: `Ctrl+C`, `Ctrl+D`, `Ctrl+\` in all contexts (prompt, execution, heredoc)
-- Proper exit codes following bash behavior (126, 127, 130...)
-
----
-
-## Instructions
-
-### Requirements
-
-- GCC or Clang
-- GNU Make
-- `readline` library (`libreadline-dev` on Debian/Ubuntu)
-
-### Compilation
-
-```bash
-make
-```
-
-This produces the `minishell` executable at the root of the repository.
-
-```bash
-make clean    # remove object files
-make fclean   # remove object files and executable
-make re       # recompile from scratch
-```
-
-### Execution
-
-```bash
-./minishell
-```
-
-The shell starts in interactive mode. Type commands as you would in bash:
-
-```bash
-minishell$ echo "hello world"
-hello world
+```console
 minishell$ cat << EOF | grep hello
 > hello world
 > bye
 > EOF
 hello world
-minishell$ export FOO=bar && echo $FOO
-bar
-minishell$ exit
+minishell$ unset PATH
+minishell$ ls
+minishell: ls: command not found
+minishell$ echo "status=$?"
+status=127
 ```
 
-To run non-interactively (e.g. from a script):
+## Highlights
+
+- **Full command-line pipeline**: tokenizer → syntax check → `$VAR` / `$?` expansion → quote removal → parser → executor.
+- **Processes and file descriptors**: multi-stage pipelines with `fork`, `execve`, `pipe`, `dup2` and `waitpid`;
+  every unused fd is closed in each child.
+- **Heredocs done right**: several heredocs on one command (`cat << A << B`), quoted delimiters disable
+  expansion (`<< 'EOF'`), heredocs inside pipelines.
+- **Bash-accurate signals and exit codes**: `Ctrl-C`, `Ctrl-D` and `Ctrl-\` behave like Bash at the prompt, during
+  execution and inside heredocs; exit codes 126, 127, 130, and 2 for syntax errors.
+- **Terminal control**: `termios` (`VQUIT`, `ECHOCTL`) to stop `^\` from being echoed while a heredoc is read.
+- **Memory**: no leaks from project code under Valgrind (readline's own allocations are suppressed with `readline.supp`).
+
+## Features
+
+| Area | Supported |
+|---|---|
+| Prompt | Interactive prompt with history (`readline`) |
+| Built-ins | `echo` (with `-n`), `cd`, `pwd`, `export`, `unset`, `env`, `exit` |
+| Quotes | `'single'` (literal) and `"double"` (with expansion) |
+| Expansion | `$VAR`, `$?` |
+| Redirections | `<`, `>`, `>>`, `<<` (heredoc) |
+| Pipes | Any number of commands: `cmd1 \| cmd2 \| cmd3` |
+| Signals | `Ctrl-C`, `Ctrl-D`, `Ctrl-\` in every context |
+
+Not implemented (bonus part of the subject): `&&`, `||`, parentheses and `*` wildcards. `;` and `\` are not
+interpreted, as required by the subject.
+
+## Build & Run
+
+Requirements: `cc` (or `gcc` / `clang`), GNU Make and the readline library (`sudo apt install libreadline-dev`).
 
 ```bash
-echo "ls | grep .c" | ./minishell
+make
+./minishell
 ```
 
----
+Other targets: `make clean`, `make fclean`, `make re`.
+
+## How it works
+
+```
+readline("minishell$ ")
+  └─ check_unclosed_quotes      reject  echo "abc   (exit status 2)
+  └─ add_spaces_ops + ms_split  "ls|wc" -> ["ls", "|", "wc"], quote-aware
+  └─ lexer                      words, pipes and redirection tokens
+  └─ check_tokens_syntax        "| ls", "ls >"... -> syntax error (exit status 2)
+  └─ expander                   $VAR and $? (not inside single quotes)
+  └─ quote_removal
+  └─ parse                      list of commands, each with argv and redirections
+  └─ exec_cmds
+       ├─ heredocs              all read before any fork (Ctrl-C aborts the whole line, status 130)
+       ├─ single built-in       runs in the parent process (so cd, export and exit affect the shell)
+       └─ otherwise             one fork per command, pipes between them
+```
+
+The shell uses one global variable, `g_status`, written only by the signal handlers. That is the only
+safe way to report a `Ctrl-C` back to the main loop.
+
+## Testing
+
+- Compared output and exit status with `bash --posix` on quotes, expansion, redirections, pipelines, heredocs,
+  `unset PATH`, unknown commands and syntax errors.
+- Ran the shell under Valgrind with `--suppressions=readline.supp` and `--trace-children=yes`.
+
+```bash
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --suppressions=readline.supp ./minishell
+```
+
+## Project structure
+
+```
+.
+├── Makefile
+├── readline.supp        # Valgrind suppressions for readline's internal allocations
+├── inc/                 # headers
+├── libft/               # personal C library (strings, memory, ft_printf, get_next_line)
+└── srcs/
+    ├── main/            # read-eval loop
+    ├── lexer/           # tokenizer, quote removal
+    ├── parser/          # syntax check, command list building
+    ├── expander/        # $VAR and $? expansion
+    ├── exec/            # fork/execve, pipes, redirections, heredocs, PATH lookup
+    ├── builtins/        # echo, cd, pwd, export, unset, env, exit
+    ├── env/             # environment as a linked list
+    ├── signals/         # prompt / child / heredoc signal handling
+    └── utils/
+```
 
 ## Resources
 
-### Documentation and references
-
-**Shell behavior and specification**
-- [GNU Bash Reference Manual](https://www.gnu.org/software/bash/manual/bash.html) — authoritative reference for bash behavior, used throughout the project to align our implementation.
-- [POSIX.1-2017 — Shell Command Language](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) — formal specification for POSIX shell behavior.
-- [Write a Shell in C — Stephen Brennan](https://brennan.io/2015/01/16/write-a-shell-in-c/) — introductory walkthrough of shell implementation concepts.
-- [Shell implementation in C — cs.purdue.edu](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf) — university course covering shell implementation in depth.
-
-**System calls and Linux API**
-- [Linux man pages](https://man7.org/linux/man-pages/) — used extensively for system calls: `fork`, `execve`, `pipe`, `dup2`, `waitpid`, `sigaction`, `tcsetattr`, `readline`, and more.
-- [The Linux Programming Interface — Michael Kerrisk](https://man7.org/tlpi/) — exhaustive reference on the Linux API; chapters 24–27 (processes), 44 (pipes), 63 (signals).
-- [Advanced Unix Programming — Marc Rochkind](https://www.informit.com/store/advanced-unix-programming-9780131411548) — classic reference covering `fork`, `exec`, signals, and pipes.
-
-**Signals**
-- [signal(7) man page](https://man7.org/linux/man-pages/man7/signal.7.html) — complete list of POSIX signals and their default behavior.
-- [sigaction(2) man page](https://man7.org/linux/man-pages/man2/sigaction.2.html) — signal disposition API used throughout the project.
-
-**Terminal and termios**
-- [termios(3) man page](https://man7.org/linux/man-pages/man3/termios.3.html) — terminal control, `VQUIT`, `ECHOCTL`, `tcsetattr`.
-- [The TTY demystified — Linus Åkesson](https://www.linusakesson.net/programming/tty/) — essential read to understand why `SIG_IGN` alone is not enough to suppress `^\` during heredoc input.
-
-**Readline**
-- [GNU Readline Library — Programmatic API](https://tiswww.case.edu/php/chet/readline/readline.html#SEC23) — functions `rl_on_new_line`, `rl_replace_line`, `rl_redisplay` used in the SIGINT handler.
-- [readline general documentation](https://tiswww.case.edu/php/chet/readline/rltop.html) — API reference for the readline library used for the interactive prompt and history.
-
-**Heredoc**
-- [Bash heredoc — linuxize.com](https://linuxize.com/post/bash-heredoc/) — expected heredoc behavior, quoted delimiters, and variable expansion rules.
-- [Here Documents — tldp.org](https://tldp.org/LDP/abs/html/here-docs.html) — Advanced Bash Scripting Guide section on heredocs.
+- [GNU Bash Reference Manual](https://www.gnu.org/software/bash/manual/bash.html), the reference used to align behavior
+- [POSIX Shell Command Language](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
+- [The Linux Programming Interface](https://man7.org/tlpi/) by M. Kerrisk: processes (ch. 24–27), pipes (ch. 44), signals (ch. 63)
+- [The TTY demystified](https://www.linusakesson.net/programming/tty/), which explains why `SIG_IGN` alone does not hide `^\`
+- [GNU Readline API](https://tiswww.case.edu/php/chet/readline/readline.html#SEC23): `rl_on_new_line`, `rl_replace_line`, `rl_redisplay`
+- [Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/) by Stephen Brennan
+- Linux man pages: `fork`, `execve`, `pipe`, `dup2`, `waitpid`, `sigaction`, `tcsetattr`
 
 ### AI usage
 
-AI assistance (Claude, Anthropic) was used during the development of this project for the following tasks:
+AI assistance (Claude, Anthropic) was used for:
 
-- **Debugging**: identifying the root cause of a double heredoc bug caused by `dup2` being called on `STDIN_FILENO` between heredoc reads, which corrupted the `save_stdin` captured in subsequent `handle_heredoc` calls. The fix was restructuring `apply_redirs` to resolve all file descriptors before applying any `dup2`.
-- **Signal and terminal handling**: understanding why `Ctrl+\` printed `^\` during heredoc input despite `SIGQUIT` being set to `SIG_IGN` — the cause being `ECHOCTL` at the tty driver level — and implementing the fix via `tcsetattr`/`VQUIT`/`_POSIX_VDISABLE`.
+- **Debugging**: finding the root cause of a double-heredoc bug. `dup2` was called on `STDIN_FILENO` between
+  heredoc reads, which corrupted the saved stdin of later `handle_heredoc` calls. The fix was to resolve every
+  file descriptor in `apply_redirs` before applying any `dup2`.
+- **Signals and terminal**: understanding why `Ctrl-\` still printed `^\` during heredoc input with `SIGQUIT`
+  ignored. The cause is `ECHOCTL` at the tty driver level, fixed with `tcsetattr` / `VQUIT` / `_POSIX_VDISABLE`.
+
+## 42 evaluation
+
+Validated at **101/100** by 3 peer evaluations (team of 2).
+Other students' names and photos are blurred.
+
+<p align="center"><img src="assets/42_evaluation.png" alt="42 intra evaluation page" width="620"></p>
+
+## Authors
+
+- **Raphael Goldenberg** ([@raphaelggg](https://github.com/raphaelggg)), 42 login `ragolden`
+- **Adem Chebbi** ([@ademchbb](https://github.com/ademchbb)), 42 login `adchebbi`
